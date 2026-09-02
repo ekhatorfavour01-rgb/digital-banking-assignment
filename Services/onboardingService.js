@@ -10,8 +10,7 @@ exports.onboardWithBvn = async ({ firstName, lastName, email, bvn, dob, phone })
     jwtSecret,
     { expiresIn: '7d' }
   );
-
-  const customer = await Customer.create({
+    const customer = await Customer.create({
     firstName,
     lastName,
     email,
