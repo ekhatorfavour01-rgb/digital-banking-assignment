@@ -12,7 +12,7 @@ const getToken = async () => {
     if (cachedToken) return cachedToken;
 
     const { data } = await nibssApi.post('/api/auth/token', {
-        apiKey: nibssApiKey,t
+        apiKey: nibssApiKey,
         apiSecret: nibssApiSecret,
     });
 
