@@ -51,9 +51,9 @@ exports.fintechOnboard = async (payload) => (await nibssApi.post('/api/fintech/o
 
 
 exports.createAccount = async (payload) => {
-    const headers = await authheader();
+    const headers = await authHeader();
    try {
-        const resonse = await nibssApi.post('/api/accounts/create', payload);
+        const resonse = await nibssApi.post('/api/account/create', payload);
         return resonse.data;
     }
     catch (err) {
@@ -62,21 +62,21 @@ exports.createAccount = async (payload) => {
 };
 
 exports.nameEnquiry = async (accountNumber) => {
-    const headers = await authheader();
+    const headers = await authHeader();
     return (await nibssApi.post(`/api/account/name-enquiry/${accountNumber}`, { headers })).data;
 };
 
 exports.getBalance = async (accountNumber) => {
-    const headers = await authheader();
+    const headers = await authHeader();
     return (await nibssApi.get(`/api/account/balance/${accountNumber}`, { headers })).data;
 };
 
 exports.transfer = async (payload) => {
-    const headers = await authheader();
+    const headers = await authHeader();
     return (await nibssApi.post('/api/transfer', payload, { headers })).data;
 };
 
 exports.getTransactionByReference = async (reference) => {
-    const headers = await authheader();
+    const headers = await authHeader();
     return (await nibssApi.get(`/api/transaction/${reference}`, { headers })).data;
 };

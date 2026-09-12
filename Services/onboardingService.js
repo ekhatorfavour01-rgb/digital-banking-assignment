@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const { jwtSecret } = require('../Config/env');
 const Customer = require('../Models/Customer');
 const nibssService = require('./nibssService');
@@ -5,7 +6,7 @@ const nibssService = require('./nibssService');
 exports.onboardWithBvn = async ({ firstName, lastName, email, bvn, dob, phone }) => {
   const nibssResult = await nibssService.createBvn({ bvn, firstName, lastName, dob, phone });
 
-  const createCustomerToken = (customerId) => jwtSecret.sign(
+  const createCustomerToken = (customerId) => jwt.sign(
     { customerId: customerId.toString() },
     jwtSecret,
     { expiresIn: '7d' }
@@ -27,7 +28,7 @@ exports.onboardWithBvn = async ({ firstName, lastName, email, bvn, dob, phone })
 exports.onboardWithNin = async ({ firstName, lastName, email, dob, nin }) => {
   const nibssResult = await nibssService.createNin({ nin, firstName, lastName, dob });
 
-  const createCustomerToken = (customerId) => jwtSecret.sign(
+  const createCustomerToken = (customerId) => jwt.sign(
     { customerId: customerId.toString() },
     jwtSecret,
     { expiresIn: '7d' }

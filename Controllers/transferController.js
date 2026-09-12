@@ -1,4 +1,4 @@
-const transferService = require('../services/transferService');
+const transferService = require('../Services/transferService');
 const { success, error } = require('../Utils/response');
 
 

@@ -8,7 +8,7 @@ exports.createBvn = async (req, res, next) => {
         if (!firstName || !lastName || !email || !bvn ||!dob ||!phone) {
             return error(res, 400, 'firstName,lastName, email, and bvn are required');
         }
-        const { customer, nibssResult } = await  onboardingService.onboardWithBvn({ firstName, lastName, email, bvn, dob, phone });
+        const { customer, token, nibssResult } = await  onboardingService.onboardWithBvn({ firstName, lastName, email, bvn, dob, phone });
 
         success(res, 201, { customer, token }, { nibss: nibssResult });
     }
@@ -26,7 +26,7 @@ exports.createNin = async (req, res, next) => {
       return error(res, 400, 'firstName, lastName, email, and nin are required');
     }
 
-    const { customer, nibssResult } = await onboardingService.onboardWithNin({ firstName, lastName, email, dob, nin });
+    const { customer, token, nibssResult } = await onboardingService.onboardWithNin({ firstName, lastName, email, dob, nin });
 
     success(res, 201, { customer, token }, { nibss: nibssResult });
   } catch (err) {
