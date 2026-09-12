@@ -38,7 +38,7 @@ exports.createAccount = async (customerId, kycOverride = {}) => {
     dob,
   });
 
-  const accountNumber = nibssResult?.accountNumber || nibssResult?.data?.accountNumber || nibssResult?.data?.account?.accountNumber;
+  const accountNumber = nibssResult.account?.accountNumber || nibssResult.accountNumber || nibssResult.data?.accountNumber;
 
   if (!accountNumber) {
     throw new AppError(

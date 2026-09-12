@@ -3,7 +3,7 @@ const { nibssBaseUrl, nibssApiKey, nibssApiSecret } = require('../Config/env');
 
 const nibssApi = axios.create({
     baseURL: nibssBaseUrl,
-    headers: { 'Content-Type': 'apllication/json' },
+    headers: { 'Content-Type': 'application/json' },
 });
 
 let cachedToken = null;
@@ -64,6 +64,7 @@ exports.createAccount = async (payload) => {
     const headers = await authHeader();
    try {
         const response = await nibssApi.post('/api/account/create', payload, { headers });
+        console.log('NIBSS ACCOUNT RESPONSE:', JSON.stringify(response.data));
         return response.data;
     }
     catch (err) {
