@@ -3,9 +3,9 @@ const { success, error } = require('../Utils/response');
 
 
 exports.createAccount = async (req, res, next) => {
-   const { KycType, KycID, dob } = req.body;
+   const { kycType, kycID, dob } = req.body;
     try {
-        const { account, nibssResult } = await accountService.createAccount(req.customerId, { KycType, KycID, dob });
+        const { account, nibssResult } = await accountService.createAccount(req.customerId, { kycType, kycID, dob });
 
         success(res, 201, account, { nibss: nibssResult });
     }

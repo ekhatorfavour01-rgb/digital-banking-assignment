@@ -12,7 +12,7 @@ class AppError extends Error {
   }
 }
 
-exports.createAccount = async (customerId, KycOverride = {}) => {
+exports.createAccount = async (customerId, kycOverride = {}) => {
   if (!customerId) {
     throw new AppError('Authentication failed: customerId is missing', 401);
   }
@@ -25,23 +25,22 @@ exports.createAccount = async (customerId, KycOverride = {}) => {
 
   if (existingAccount) throw new AppError('Customer already has an account', 400);
 
-  const KycType = KycOverride.KycType || (customer.bvn ? 'bvn' : 'nin')
-  const KycID = KycOverride.KycID || customer.bvn || customer.nin;
-  const dob = KycOverride.dob || customer.dob;
+  const kycType = kycOverride.kycType || (customer.bvn ? 'bvn' : 'nin')
+  const kycID = kycOverride.kycID || customer.bvn || customer.nin;
+  const dob = kycOverride.dob || customer.dob;
 
   const nibssResult = await nibssService.createAccount({
     KycType: customer.bvn ? 'bvn' : 'nin',
     KycID: customer.bvn || customer.nin,
     dob: customer.dob,
-    KycType,
-    KycID,
+    kycType,
+    kycID,
     dob,
   });
 
   const accountNumber = nibssResult?.accountNumber || nibssResult?.data?.accountNumber || nibssResult?.data?.account?.accountNumber;
 
   if (!accountNumber) {
-    console.error('NIBSS Raw Response Failed Payload:', nibssResult);
     throw new AppError(
       'NIBSS did not return valid account number', 502
     );

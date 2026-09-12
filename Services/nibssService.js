@@ -20,7 +20,7 @@ const getToken = async () => {
     return cachedToken;
 };
 
-const authheader = async () => ({ Authorization: `Bearer ${await getToken()}` 
+const authHeader = async () => ({ Authorization: `Bearer ${await getToken()}` 
 });
 
 exports.createBvn = async (payload) => {
@@ -53,7 +53,7 @@ exports.fintechOnboard = async (payload) => (await nibssApi.post('/api/fintech/o
 exports.createAccount = async (payload) => {
     const headers = await authHeader();
    try {
-        const resonse = await nibssApi.post('/api/account/create', payload);
+        const resonse = await nibssApi.post('/api/account/create', payload, { headers });
         return resonse.data;
     }
     catch (err) {
