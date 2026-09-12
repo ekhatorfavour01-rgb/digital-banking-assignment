@@ -11,6 +11,9 @@ let cachedToken = null;
 const getToken = async () => {
     if (cachedToken) return cachedToken;
 
+    try {
+        console.log('API LEY', nibssApiKey);
+        console.log('BASE URL', nibssBaseUrl);
     const { data } = await nibssApi.post('/api/auth/token', {
         apiKey: nibssApiKey,
         apiSecret: nibssApiSecret,
@@ -18,6 +21,13 @@ const getToken = async () => {
 
     cachedToken = data.token || data.accessToken || data.data?.token;
     return cachedToken;
+}
+catch (err) {
+    console.log('TOKEN ERROR STATUS:', err.response?.status);
+    console.log('TOKEN ERROR DATA:', err.response?.data);
+    console.log('TOKEN ERROR MESSAGE:', err.message);
+    throw err;
+}
 };
 
 const authHeader = async () => ({ Authorization: `Bearer ${await getToken()}` 
@@ -25,21 +35,21 @@ const authHeader = async () => ({ Authorization: `Bearer ${await getToken()}`
 
 exports.createBvn = async (payload) => {
     try {
-        const resonse = await nibssApi.post('/api/insertBvn', payload);
-        return resonse.data;
+        const response = await nibssApi.post('/api/insertBvn', payload);
+        return response.data;
     }
     catch (err) {
-        console.log('NIBSS ERROR:', err.resonse?.data || err.message);
+        console.log('NIBSS ERROR:', err.response?.data || err.message);
     }
 }
 
 exports.createNin = async (payload) =>  {
     try {
-        const resonse = await nibssApi.post('/api/insertNin', payload);
-        return resonse.data;
+        const response = await nibssApi.post('/api/insertNin', payload);
+        return response.data;
     }
     catch (err) {
-        console.log('NIBSS ERROR:', err.resonse?.data || err.message);
+        console.log('NIBSS ERROR:', err.response?.data || err.message);
     }
 }
 
@@ -53,11 +63,11 @@ exports.fintechOnboard = async (payload) => (await nibssApi.post('/api/fintech/o
 exports.createAccount = async (payload) => {
     const headers = await authHeader();
    try {
-        const resonse = await nibssApi.post('/api/account/create', payload, { headers });
-        return resonse.data;
+        const response = await nibssApi.post('/api/account/create', payload, { headers });
+        return response.data;
     }
     catch (err) {
-        console.log('NIBSS ERROR:', err.resonse?.data || err.message);
+        console.log('NIBSS ERROR:', err.response?.data || err.message);
     }
 };
 
