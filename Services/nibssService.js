@@ -64,17 +64,29 @@ exports.createAccount = async (payload) => {
     const headers = await authHeader();
    try {
         const response = await nibssApi.post('/api/account/create', payload, { headers });
-        console.log('NIBSS ACCOUNT RESPONSE:', JSON.stringify(response.data));
+        console.log('NIBSS ACCOUNT RESPONSE:', JSON.stringify(response.data, null, 2));
         return response.data;
     }
     catch (err) {
-        console.log('NIBSS ERROR:', err.response?.data || err.message);
+        console.log('NIBSS ERROR STATUS:', err.response?.status);
+
+        console.log('NIBSS ERROR DATA:', err.response?.data);
+
+        console.log('NIBSS ERROR MESSAGE', err.response?.message);
+
+        throw err;
+        
     }
 };
 
 exports.nameEnquiry = async (accountNumber) => {
     const headers = await authHeader();
-    return (await nibssApi.post(`/api/account/name-enquiry/${accountNumber}`, { headers })).data;
+    return (
+        await nibssApi.post(`/api/account/name-enquiry/${accountNumber}`,
+        {}, 
+        { headers }
+    )
+).data;
 };
 
 exports.getBalance = async (accountNumber) => {

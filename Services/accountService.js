@@ -22,23 +22,27 @@ exports.createAccount = async (customerId, kycOverride = {}) => {
   if (!customer.isVerified) throw new AppError('Customer is not verified/onboarded yet', 400);
 
   const existingAccount = await Account.findOne({ customer: customerId });
-
   if (existingAccount) throw new AppError('Customer already has an account', 400);
 
   const kycType = kycOverride.kycType || (customer.bvn ? 'bvn' : 'nin')
   const kycID = kycOverride.kycID || customer.bvn || customer.nin;
   const dob = kycOverride.dob || customer.dob;
 
+  if (!kycID || dob) {
+    throw new AppError('KYC ID and date of birth are required', 400);
+    
+  }
+
   const nibssResult = await nibssService.createAccount({
-    KycType: customer.bvn ? 'bvn' : 'nin',
-    KycID: customer.bvn || customer.nin,
-    dob: customer.dob,
     kycType,
     kycID,
     dob,
   });
 
-  const accountNumber = nibssResult.account?.accountNumber || nibssResult.accountNumber || nibssResult.data?.accountNumber;
+console.log('NIBSS ACCOUNT RESPONSE:', JSON.stringify(nibssResult, null, 2));
+
+
+const accountNumber = nibssResult.account?.accountNumber;
 
   if (!accountNumber) {
     throw new AppError(
@@ -49,7 +53,7 @@ exports.createAccount = async (customerId, kycOverride = {}) => {
   const account = await Account.create({
     customer: customerId,
     accountNumber,
-    balance: 15000,
+    balance: nibssResult.account?.balance ?? 15000
   });
 
   return { account, nibssResult };
