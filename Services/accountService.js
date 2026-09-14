@@ -28,7 +28,7 @@ exports.createAccount = async (customerId, kycOverride = {}) => {
   const kycID = kycOverride.kycID || customer.bvn || customer.nin;
   const dob = kycOverride.dob || customer.dob;
 
-  if (!kycID || dob) {
+  if (!kycID || !dob) {
     throw new AppError('KYC ID and date of birth are required', 400);
     
   }
