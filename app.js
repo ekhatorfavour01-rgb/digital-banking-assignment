@@ -6,16 +6,17 @@ const errorMiddleware = require('./Middleware/errorMiddleware');
 const connectDB = require('./Config/db');
 const { port } = require('./Config/env');
 
+const app = express();
+app.use(express.json());
+
+
 const onboardingRoutes = require('./Routes/onboardingRoutes');
 const accountRoutes = require('./Routes/accountRoutes');
 const transferRoutes = require('./Routes/transferRoutes');
 const transactionRoutes = require('./Routes/transactionRoutes');
 
 
-const app = express();
 
-
-app.use(express.json());
 
 app.use('/api/onboarding', onboardingRoutes);
 app.use('/api/accounts', accountRoutes);
